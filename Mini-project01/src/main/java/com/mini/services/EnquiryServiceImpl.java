@@ -1,0 +1,69 @@
+package com.mini.services;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Service;
+
+import com.mini.dto.Dashboard;
+import com.mini.entities.Counsellors;
+import com.mini.entities.Enquiry;
+import com.mini.repo.CounsellorsRepository;
+import com.mini.repo.EnquiresRepository;
+
+@Service
+public class EnquiryServiceImpl implements EnquiryServices {
+	
+	@Autowired
+	private EnquiresRepository enqRepo;
+	@Autowired
+	private CounsellorsRepository counRepo;
+
+	@Override
+	public Dashboard getDashboard(Integer councellorId) {
+		// TODO Auto-generated method stub
+		Long totalenq = enqRepo.getEnquiries(councellorId);
+		Long openenq = enqRepo.getEnquiries(councellorId,"openEnq");
+		Long lostenq = enqRepo.getEnquiries(councellorId, "lostEnq");
+		Long enrolledEnq = enqRepo.getEnquiries(councellorId, "enrolledEnq");
+		
+		Dashboard d = new Dashboard();
+		d.setTotalEnq(totalenq);
+		d.setOpenEnq(openenq);
+		d.setLostEnq(lostenq);
+		d.setEnrolledEnq(enrolledEnq);
+		
+		return d;
+		
+		
+	}
+
+	@Override
+	public Boolean addEnquiry(Enquiry enquiry, Integer councellorId) {
+	 Counsellors counsellors = counRepo.findById(councellorId).orElseThrow();
+	 enquiry.setCounsellors(counsellors);
+	 Enquiry save = enqRepo.save(enquiry);
+	 return save.getId() != null;
+		
+	}
+
+	@Override
+	public List<Enquiry> getEnquiries(Enquiry enquiry, Integer councellorId) {
+		// TODO Auto-generated method stub
+		Counsellors counsellors = counRepo.findById(councellorId).orElseThrow();
+		 enquiry.setCounsellors(counsellors);
+		 //dynamic query creation
+		Example<Enquiry> of = Example.of(enquiry);
+		return enqRepo.findAll(of);
+	}
+
+	@Override
+	public Enquiry getEnquiry(Integer enquiryId) {
+		// TODO Auto-generated method stub
+		Enquiry enq = enqRepo.findById(enquiryId).orElseThrow();
+		return enq;
+	}
+
+}
