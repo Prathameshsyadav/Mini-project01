@@ -10,6 +10,77 @@
    <div class="container">
    		<h2>View Enquiry</h2>
    		
+   		<form th:action="@{/filter-enqs}" th:object="${enq}" method="post">
+
+
+			<table>
+				<tr>
+				
+					<td>Class mode :</td>
+					<td><select th:field="*{classMode}">
+							<option value="">-Select-</option>
+							<option value="classroom">Classroom</option>
+							<option value="online">Online</option>
+					</select></td>
+				
+					<td>Course :</td>
+					<td><select th:field="*{course}">
+							<option value="">-Select-</option>
+							<option value="Java">Java</option>
+							<option value="Python">Python</option>
+							<option value="DevOps">DevOps</option>
+					</select></td>
+				
+					<td>Status :</td>
+					<td><select th:field="*{status}">
+							<option value="">-Select-</option>
+							<option value="New">New</option>
+							<option value="Enrolled">Enrolled</option>
+							<option value="Lost">Lost</option>
+					</select></td>
+				
+					<td><input type="submit" value="Search"
+						class="btn btn-primary"></td>
+				</tr>
+
+
+				</tr>
+			</table>
+			
+		<h5><a href="dashboard">Dashboard</a></h5>	
+
+		</form>
+   		
+   		
+   		<table class="table table-bordered table-striped">
+   			<thead>
+   				<tr>
+   					<th>ID</th>
+   					<th>Name</th>
+   					<th>Phno</th>
+   					<th>Course</th>
+   					<th>Status</th>
+   					<th>Mode</th>
+   					<th>Action</th>
+   				</tr>
+   			</thead>
+   			<tbody>
+   				<tr th:each="enq : ${enqs}">           
+	   				<td th:text="${enq.id}"/>
+	   				<td th:text="${enq.stuName}"/>
+	   				<td th:text="${enq.phNo}"/>
+	   				<td th:text="${enq.course}"/>
+	   				<td th:text="${enq.classMode}"/>
+	   				<td th:text="${enq.status}"/>
+	   				<td>
+	   					<!-- <a href="enquiry">Edit</a> -->
+	   					<a th:href="@{'/edit?enqId=' + ${enq.id}}">Edit</a>
+
+	   				</td>
+   				</tr>	
+   			</tbody>
+   		</table>
+   		
   
    			<h5><a href="dashboard">Dashboard</a></h5>	
    		

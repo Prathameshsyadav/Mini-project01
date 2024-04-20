@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -62,7 +63,7 @@ public class EnquiryController {
 	
 	//filter enquries
 	@PostMapping("/filter-enqs")
-	public String filterEnqs(Model m, Enquiry enq, HttpServletRequest req) {
+	public String filterEnqs(@ModelAttribute("enq") Enquiry enq,Model m, HttpServletRequest req) {
 		HttpSession session = req.getSession(false);
 		Integer cid = (Integer) session.getAttribute("cid");
 		
